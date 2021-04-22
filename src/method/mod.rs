@@ -7,7 +7,7 @@ pub enum Method {
 pub fn align_method(vec: &[u8]) -> [u8; 3] {
     let len = vec.len();
     if len < 3 || len > 3 {
-        return [0, 0, 0];
+        return [0; 3];
     }
     let mut buf = [0; 3];
     buf.copy_from_slice(vec);

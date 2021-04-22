@@ -23,7 +23,7 @@ fn lf_test() {
 }
 
 #[macro_export]
-macro_rules! space_bar {
+macro_rules! sp {
     () => {
         0x20
     };
@@ -31,5 +31,5 @@ macro_rules! space_bar {
 
 #[test]
 fn space_bar_test() {
-    assert_eq!(space_bar!(), ' ' as u8);
+    assert_eq!(sp!(), ' ' as u8);
 }
