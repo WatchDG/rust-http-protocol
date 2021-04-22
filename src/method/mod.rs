@@ -14,6 +14,7 @@ pub fn align_method(vec: &[u8]) -> [u8; 3] {
     buf
 }
 
+#[macro_export]
 macro_rules! get_method_enum {
     ($v: expr) => {
         match $v {
@@ -33,6 +34,7 @@ fn get_method_enum_test_null() {
     assert_eq!(get_method_enum!(align_method(b"NULL")), Method::Null);
 }
 
+#[macro_export]
 macro_rules! get_method_enum_value {
     ($a: expr) => {
         match $a {
