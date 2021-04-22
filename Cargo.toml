@@ -1,0 +1,18 @@
+[package]
+name = "http-protocol"
+version = "0.1.0"
+authors = ["WatchDG <baranov@w3m.co>"]
+license = "MIT OR Apache-2.0"
+description = "http protocol"
+homepage = "https://github.com/WatchDG/rust-http-protocol"
+documentation = "https://docs.rs/http-protocol"
+repository = "https://github.com/WatchDG/rust-http-protocol"
+readme = "README.md"
+edition = "2018"
+exclude = [
+    ".github/**/*",
+    "src/main.rs",
+    ".gitignore"
+]
+
+[dependencies]
