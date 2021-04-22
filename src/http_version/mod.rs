@@ -1,5 +1,5 @@
 #[derive(Debug, PartialEq)]
-enum HttpVersion {
+pub enum HttpVersion {
     Null,
     Http11,
 }
