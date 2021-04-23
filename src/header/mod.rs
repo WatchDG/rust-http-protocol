@@ -1,5 +1,6 @@
 use lazy_static::lazy_static;
 use std::collections::BTreeMap;
+use std::ops::Add;
 
 #[derive(Debug, PartialEq, Clone, Ord, Eq, PartialOrd)]
 pub enum Header {
@@ -153,5 +154,14 @@ impl Headers {
 
     pub fn del(&mut self, key: Header) {
         self.map.remove(&key);
+    }
+}
+
+impl Add<Headers> for Headers {
+    type Output = Headers;
+    fn add(self, mut other: Headers) -> Headers {
+        let mut map = self.map;
+        map.append(&mut other.map);
+        Headers { map }
     }
 }
