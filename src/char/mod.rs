@@ -33,3 +33,10 @@ macro_rules! sp {
 fn space_bar_test() {
     assert_eq!(sp!(), ' ' as u8);
 }
+
+#[macro_export]
+macro_rules! ht {
+    () => {
+        0x9
+    };
+}

@@ -133,22 +133,22 @@ pub fn get_header_enum(value: &[u8]) -> Header {
 }
 
 #[derive(Debug)]
-pub struct Headers {
-    map: BTreeMap<Header, Vec<u8>>,
+pub struct Headers<T> {
+    map: BTreeMap<Header, T>,
 }
 
-impl Headers {
+impl<T> Headers<T> {
     pub fn new() -> Self {
         Headers {
             map: BTreeMap::new(),
         }
     }
 
-    pub fn insert(&mut self, key: Header, value: Vec<u8>) {
+    pub fn insert(&mut self, key: Header, value: T) {
         self.map.insert(key, value);
     }
 
-    pub fn get(&self, key: Header) -> Option<&Vec<u8>> {
+    pub fn get(&self, key: Header) -> Option<&T> {
         self.map.get(&key)
     }
 
@@ -157,11 +157,20 @@ impl Headers {
     }
 }
 
-impl Add<Headers> for Headers {
-    type Output = Headers;
-    fn add(self, mut other: Headers) -> Headers {
+impl<T> Add<Headers<T>> for Headers<T> {
+    type Output = Self;
+    fn add(self, mut other: Self) -> Self {
         let mut map = self.map;
         map.append(&mut other.map);
         Headers { map }
     }
+}
+
+pub fn is_allowed_header_value(v: &[u8]) -> bool {
+    for e in v.iter() {
+        if *e < 32 || *e > 126 {
+            return false;
+        }
+    }
+    return true;
 }
