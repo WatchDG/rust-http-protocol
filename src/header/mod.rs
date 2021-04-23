@@ -1,6 +1,7 @@
 use lazy_static::lazy_static;
+use std::collections::BTreeMap;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Ord, Eq, PartialOrd)]
 pub enum Header {
     Null,
     Host,
@@ -128,4 +129,29 @@ pub fn get_header_enum(value: &[u8]) -> Header {
         ptr = &ptr[index].next_char;
     }
     Header::Null
+}
+
+#[derive(Debug)]
+pub struct Headers {
+    map: BTreeMap<Header, Vec<u8>>,
+}
+
+impl Headers {
+    pub fn new() -> Self {
+        Headers {
+            map: BTreeMap::new(),
+        }
+    }
+
+    pub fn add(&mut self, key: Header, value: Vec<u8>) {
+        self.map.insert(key, value);
+    }
+
+    pub fn get(&self, key: Header) -> Option<&Vec<u8>> {
+        self.map.get(&key)
+    }
+
+    pub fn del(&mut self, key: Header) {
+        self.map.remove(&key);
+    }
 }
