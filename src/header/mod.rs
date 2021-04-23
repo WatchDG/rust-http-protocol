@@ -144,7 +144,7 @@ impl Headers {
         }
     }
 
-    pub fn add(&mut self, key: Header, value: Vec<u8>) {
+    pub fn insert(&mut self, key: Header, value: Vec<u8>) {
         self.map.insert(key, value);
     }
 
@@ -152,7 +152,7 @@ impl Headers {
         self.map.get(&key)
     }
 
-    pub fn del(&mut self, key: Header) {
+    pub fn remove(&mut self, key: Header) {
         self.map.remove(&key);
     }
 }
