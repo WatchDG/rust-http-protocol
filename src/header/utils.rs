@@ -46,6 +46,7 @@ fn add_header(header_chars: &mut Vec<HeaderChar>, header_enum_value: &[u8], head
 lazy_static! {
     pub static ref HEADER_CHARS: Vec<HeaderChar> = {
         let mut header_chars = Vec::<HeaderChar>::new();
+        add_header(&mut header_chars, b"Sec-Fetch-User", Header::SecFetchUser);
         add_header(
             &mut header_chars,
             b"Host".to_ascii_lowercase().as_slice(),

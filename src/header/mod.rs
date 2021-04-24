@@ -18,6 +18,7 @@ pub enum Header {
     SecFetchSite,
     SecFetchMode,
     SecFetchDest,
+    SecFetchUser,
     AcceptEncoding,
     AcceptLanguage,
 }
