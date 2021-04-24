@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use std::convert::TryFrom;
+use std::convert::{TryFrom, TryInto};
 use std::error::Error;
 use std::fmt;
 
@@ -23,16 +23,6 @@ pub enum Method {
     Get,
 }
 
-pub fn align_method(vec: &[u8]) -> [u8; 3] {
-    let len = vec.len();
-    if len < 3 || len > 3 {
-        return [0; 3];
-    }
-    let mut buf = [0; 3];
-    buf.copy_from_slice(vec);
-    buf
-}
-
 impl From<Method> for Bytes {
     fn from(s: Method) -> Self {
         match s {
@@ -49,4 +39,13 @@ impl TryFrom<[u8; 3]> for Method {
             _ => Err(MethodError::InvalidMethod),
         }
     }
+}
+
+pub fn get_method(v: &[u8]) -> Result<Method, MethodError> {
+    if v.len() != 3 {
+        return Err(MethodError::InvalidMethod);
+    }
+    let mut buf = [0u8; 3];
+    buf.copy_from_slice(v);
+    buf.try_into()
 }

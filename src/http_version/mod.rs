@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use std::convert::TryInto;
+use std::convert::{TryFrom, TryInto};
 use std::error::Error;
 use std::fmt;
 
@@ -31,13 +31,22 @@ impl From<HttpVersion> for Bytes {
     }
 }
 
-impl TryInto<HttpVersion> for &[u8] {
+impl TryFrom<[u8; 8]> for HttpVersion {
     type Error = HttpVersionError;
 
-    fn try_into(self) -> Result<HttpVersion, Self::Error> {
-        match self {
+    fn try_from(v: [u8; 8]) -> Result<Self, Self::Error> {
+        match v {
             [72, 84, 84, 80, 47, 49, 46, 49] => Ok(HttpVersion::Http11),
             _ => Err(HttpVersionError::InvalidHttpVersion),
         }
     }
+}
+
+pub fn get_http_version(v: &[u8]) -> Result<HttpVersion, HttpVersionError> {
+    if v.len() != 8 {
+        return Err(HttpVersionError::InvalidHttpVersion);
+    }
+    let mut buf = [0u8; 8];
+    buf.copy_from_slice(v);
+    buf.try_into()
 }
