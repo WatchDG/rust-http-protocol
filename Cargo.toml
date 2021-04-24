@@ -1,6 +1,6 @@
 [package]
 name = "http-protocol"
-version = "0.1.16"
+version = "0.2.0"
 authors = ["WatchDG <baranov@w3m.co>"]
 license = "MIT OR Apache-2.0"
 description = "http protocol"
@@ -17,3 +17,4 @@ exclude = [
 
 [dependencies]
 lazy_static = "1.4.0"
+bytes = "1.0.1"

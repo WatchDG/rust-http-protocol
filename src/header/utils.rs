@@ -14,7 +14,7 @@ pub fn is_allowed_header_value(v: &[u8]) -> bool {
 pub struct HeaderChar {
     char_code: u8,
     next_char: Vec<HeaderChar>,
-    header: Header,
+    header: Option<Header>,
 }
 
 fn add_header(header_chars: &mut Vec<HeaderChar>, header: &[u8], header_enum: Header) {
@@ -26,9 +26,9 @@ fn add_header(header_chars: &mut Vec<HeaderChar>, header: &[u8], header_enum: He
             ptr.binary_search_by(|header_char| (header_char.char_code).cmp(char_code));
         if search_result.is_err() {
             let header = if idx == end_idx {
-                header_enum.clone()
+                Some(header_enum.clone())
             } else {
-                Header::Null
+                None
             };
             ptr.push(HeaderChar {
                 char_code: *char_code,
@@ -67,7 +67,7 @@ lazy_static! {
     };
 }
 
-pub fn get_header_enum(value: &[u8]) -> Header {
+pub fn get_header_enum(value: &[u8]) -> Option<Header> {
     let lowercase_value = value.to_ascii_lowercase();
     let mut ptr = &*HEADER_CHARS;
     let end_idx = lowercase_value.len() - 1;
@@ -75,7 +75,7 @@ pub fn get_header_enum(value: &[u8]) -> Header {
         let search_result =
             ptr.binary_search_by(|header_char| (header_char.char_code).cmp(&char_code));
         if search_result.is_err() {
-            return Header::Null;
+            return None;
         }
         let index = search_result.unwrap();
         if idx == end_idx {
@@ -83,5 +83,5 @@ pub fn get_header_enum(value: &[u8]) -> Header {
         }
         ptr = &ptr[index].next_char;
     }
-    Header::Null
+    None
 }

@@ -2,22 +2,22 @@ use crate::{Headers, HttpVersion, Method};
 use std::ops::Add;
 
 #[derive(Debug, Clone)]
-pub struct Request<UT, HT> {
+pub struct Request<UT> {
     method: Method,
     request_uri: UT,
     http_version: HttpVersion,
-    headers: Headers<HT>,
+    headers: Headers,
 }
 
 #[derive(Debug, Clone)]
-pub struct RequestPart<UT, HT> {
+pub struct RequestPart<UT> {
     method: Option<Method>,
     request_uri: Option<UT>,
     http_version: Option<HttpVersion>,
-    headers: Option<Headers<HT>>,
+    headers: Option<Headers>,
 }
 
-impl<UT, HT> Add<RequestPart<UT, HT>> for RequestPart<UT, HT> {
+impl<UT> Add<RequestPart<UT>> for RequestPart<UT> {
     type Output = Self;
     fn add(mut self, other: Self) -> Self {
         self.method = self.method.or(other.method);

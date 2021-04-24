@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! rf {
     () => {
-        0x0d
+        0x0du8
     };
 }
 
@@ -13,7 +13,7 @@ fn rf_test() {
 #[macro_export]
 macro_rules! lf {
     () => {
-        0x0a
+        0x0au8
     };
 }
 
@@ -25,7 +25,7 @@ fn lf_test() {
 #[macro_export]
 macro_rules! sp {
     () => {
-        0x20
+        0x20u8
     };
 }
 
@@ -37,6 +37,6 @@ fn space_bar_test() {
 #[macro_export]
 macro_rules! ht {
     () => {
-        0x9
+        0x9u8
     };
 }
