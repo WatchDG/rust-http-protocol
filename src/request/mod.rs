@@ -34,11 +34,11 @@ impl Error for RequestError {}
 
 #[derive(Debug, Clone)]
 pub struct RequestPart {
-    method: Option<Method>,
-    request_uri: Option<RequestUri>,
-    http_version: Option<HttpVersion>,
-    headers: Option<Headers>,
-    body: Option<Body>,
+    pub method: Option<Method>,
+    pub request_uri: Option<RequestUri>,
+    pub http_version: Option<HttpVersion>,
+    pub headers: Option<Headers>,
+    pub body: Option<Body>,
 }
 
 impl RequestPart {
