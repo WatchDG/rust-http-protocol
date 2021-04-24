@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! rf {
+macro_rules! cr {
     () => {
         0x0du8
     };
@@ -7,7 +7,7 @@ macro_rules! rf {
 
 #[test]
 fn rf_test() {
-    assert_eq!(rf!(), '\r' as u8);
+    assert_eq!(cr!(), '\r' as u8);
 }
 
 #[macro_export]

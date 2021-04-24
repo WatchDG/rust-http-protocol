@@ -111,9 +111,9 @@ impl From<Response> for Bytes {
         buf.put(Bytes::from(r.status_code));
         buf.put(Bytes::from_static(&[sp!()]));
         buf.put(Bytes::from(r.reason_phrase));
-        buf.put(Bytes::from_static(&[rf!(), lf!()]));
+        buf.put(Bytes::from_static(&[cr!(), lf!()]));
         buf.put(Bytes::from(r.headers));
-        buf.put(Bytes::from_static(&[rf!(), lf!()]));
+        buf.put(Bytes::from_static(&[cr!(), lf!()]));
         buf.put(Bytes::from(r.body));
         Bytes::from(buf)
     }

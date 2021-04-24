@@ -3,14 +3,13 @@ extern crate lazy_static;
 
 #[macro_use]
 pub mod char;
-#[macro_use]
-pub mod method;
-#[macro_use]
 pub mod http_version;
+pub mod method;
 #[macro_use]
 pub mod header;
 pub mod body;
 pub mod request;
+pub mod request_uri;
 pub mod response;
 pub mod status_code;
 
@@ -19,6 +18,7 @@ pub use header::Headers;
 pub use http_version::HttpVersion;
 pub use method::Method;
 pub use request::Request;
+pub use request_uri::RequestUri;
 pub use response::Response;
 pub use status_code::ReasonPhrase;
 pub use status_code::StatusCode;

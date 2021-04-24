@@ -1,6 +1,25 @@
-#[derive(Debug, PartialEq, Clone)]
+use bytes::Bytes;
+use std::convert::TryInto;
+use std::error::Error;
+use std::fmt;
+
+#[derive(Debug, Clone)]
+pub enum MethodError {
+    InvalidMethod,
+}
+
+impl fmt::Display for MethodError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MethodError::InvalidMethod => write!(f, "Invalid method."),
+        }
+    }
+}
+
+impl Error for MethodError {}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum Method {
-    Null,
     Get,
 }
 
@@ -14,42 +33,21 @@ pub fn align_method(vec: &[u8]) -> [u8; 3] {
     buf
 }
 
-#[macro_export]
-macro_rules! get_method_enum {
-    ($v: expr) => {
-        match $v {
-            [71, 69, 84] => Method::Get,
-            _ => Method::Null,
+impl From<Method> for Bytes {
+    fn from(s: Method) -> Self {
+        match s {
+            Method::Get => Bytes::from_static(b"GET"),
         }
-    };
+    }
 }
 
-#[test]
-fn get_method_enum_test_get() {
-    assert_eq!(get_method_enum!(align_method(b"GET")), Method::Get);
-}
+impl TryInto<Method> for &[u8; 3] {
+    type Error = MethodError;
 
-#[test]
-fn get_method_enum_test_null() {
-    assert_eq!(get_method_enum!(align_method(b"NULL")), Method::Null);
-}
-
-#[macro_export]
-macro_rules! get_method_enum_value {
-    ($a: expr) => {
-        match $a {
-            Method::Get => vec![71u8, 69, 84],
-            _ => vec![],
+    fn try_into(self) -> Result<Method, Self::Error> {
+        match self {
+            [71, 69, 84] => Ok(Method::Get),
+            _ => Err(MethodError::InvalidMethod),
         }
-    };
-}
-
-#[test]
-fn get_method_enum_value_test_get() {
-    assert_eq!(get_method_enum_value!(Method::Get), b"GET");
-}
-
-#[test]
-fn get_method_enum_value_test_null() {
-    assert_eq!(get_method_enum_value!(Method::Null), b"");
+    }
 }

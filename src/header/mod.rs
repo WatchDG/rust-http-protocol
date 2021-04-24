@@ -91,7 +91,7 @@ impl From<Headers> for Bytes {
             buf.put(Bytes::from(k));
             buf.put(Bytes::from_static(&[58u8, sp!()]));
             buf.put(v);
-            buf.put(Bytes::from_static(&[rf!(), lf!()]));
+            buf.put(Bytes::from_static(&[cr!(), lf!()]));
         }
         Bytes::from(buf)
     }
