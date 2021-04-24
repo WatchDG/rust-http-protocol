@@ -1,6 +1,6 @@
 [package]
 name = "http-protocol"
-version = "0.1.13"
+version = "0.1.14"
 authors = ["WatchDG <baranov@w3m.co>"]
 license = "MIT OR Apache-2.0"
 description = "http protocol"

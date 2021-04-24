@@ -8,3 +8,9 @@ pub mod method;
 pub mod http_version;
 #[macro_use]
 pub mod header;
+pub mod request;
+
+pub use header::Headers;
+pub use http_version::HttpVersion;
+pub use method::Method;
+pub use request::Request;
