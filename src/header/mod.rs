@@ -1,6 +1,7 @@
 mod utils;
 
 use std::collections::BTreeMap;
+use std::ops::Add;
 pub use utils::get_header_enum;
 pub use utils::is_allowed_header_value;
 pub use utils::HeaderChar;
@@ -47,5 +48,14 @@ impl<T> Headers<T> {
 
     pub fn append(&mut self, mut other: Headers<T>) {
         self.inner.append(&mut other.inner);
+    }
+}
+
+impl<T> Add<Headers<T>> for Headers<T> {
+    type Output = Self;
+
+    fn add(mut self, other: Self) -> Self::Output {
+        self.append(other);
+        self
     }
 }
