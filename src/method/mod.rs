@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use std::convert::TryInto;
+use std::convert::TryFrom;
 use std::error::Error;
 use std::fmt;
 
@@ -41,11 +41,10 @@ impl From<Method> for Bytes {
     }
 }
 
-impl TryInto<Method> for &[u8; 3] {
+impl TryFrom<[u8; 3]> for Method {
     type Error = MethodError;
-
-    fn try_into(self) -> Result<Method, Self::Error> {
-        match self {
+    fn try_from(v: [u8; 3]) -> Result<Self, Self::Error> {
+        match v {
             [71, 69, 84] => Ok(Method::Get),
             _ => Err(MethodError::InvalidMethod),
         }
