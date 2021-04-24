@@ -3,10 +3,29 @@ mod utils;
 use bytes::BufMut;
 use bytes::Bytes;
 use std::collections::BTreeMap;
+use std::error::Error;
+use std::fmt;
 use std::ops::Add;
-pub use utils::get_header_enum;
-pub use utils::is_allowed_header_value;
+pub use utils::check_header_value;
+pub use utils::get_header;
 pub use utils::HeaderChar;
+
+#[derive(Debug, Clone)]
+pub enum HeaderError {
+    InvalidHeader,
+    InvalidHeaderValue,
+}
+
+impl fmt::Display for HeaderError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            HeaderError::InvalidHeader => write!(f, "Invalid header."),
+            HeaderError::InvalidHeaderValue => write!(f, "Invalid header value."),
+        }
+    }
+}
+
+impl Error for HeaderError {}
 
 #[derive(Debug, PartialEq, Clone, Ord, Eq, PartialOrd)]
 pub enum Header {

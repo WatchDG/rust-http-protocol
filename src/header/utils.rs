@@ -1,14 +1,5 @@
-use crate::header::Header;
+use crate::header::{Header, HeaderError};
 use lazy_static::lazy_static;
-
-pub fn is_allowed_header_value(v: &[u8]) -> bool {
-    for e in v.iter() {
-        if *e < 32 || *e > 126 {
-            return false;
-        }
-    }
-    return true;
-}
 
 #[derive(Debug, PartialEq)]
 pub struct HeaderChar {
@@ -67,21 +58,27 @@ lazy_static! {
     };
 }
 
-pub fn get_header_enum(value: &[u8]) -> Option<Header> {
+pub fn get_header(value: &[u8]) -> Result<Header, HeaderError> {
     let lowercase_value = value.to_ascii_lowercase();
     let mut ptr = &*HEADER_CHARS;
     let end_idx = lowercase_value.len() - 1;
     for (idx, char_code) in lowercase_value.iter().enumerate() {
         let search_result =
             ptr.binary_search_by(|header_char| (header_char.char_code).cmp(&char_code));
-        if search_result.is_err() {
-            return None;
-        }
-        let index = search_result.unwrap();
+        let index = search_result.map_err(|_| HeaderError::InvalidHeader)?;
         if idx == end_idx {
-            return ptr[index].header.clone();
+            return ptr[index].header.clone().ok_or(HeaderError::InvalidHeader);
         }
         ptr = &ptr[index].next_char;
     }
-    None
+    Err(HeaderError::InvalidHeader)
+}
+
+pub fn check_header_value(v: &[u8]) -> Result<(), HeaderError> {
+    for e in v.iter() {
+        if *e < 32 || *e > 126 {
+            return Err(HeaderError::InvalidHeaderValue);
+        }
+    }
+    Ok(())
 }
