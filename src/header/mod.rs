@@ -21,7 +21,7 @@ pub enum Header {
     AcceptLanguage,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Headers<T> {
     inner: BTreeMap<Header, T>,
 }
