@@ -41,6 +41,11 @@ pub enum Header {
     SecFetchUser,
     AcceptEncoding,
     AcceptLanguage,
+    Authorization,
+    ContentEncoding,
+    ContentLength,
+    ContentType,
+    Upgrade,
 }
 
 impl From<Header> for Bytes {
@@ -58,6 +63,11 @@ impl From<Header> for Bytes {
             Header::SecFetchUser => Bytes::from_static(b"Sec-Fetch-User"),
             Header::AcceptEncoding => Bytes::from_static(b"Accept-Encoding"),
             Header::AcceptLanguage => Bytes::from_static(b"Accept-Language"),
+            Header::Authorization => Bytes::from_static(b"Authorization"),
+            Header::ContentEncoding => Bytes::from_static(b"Content-Encoding"),
+            Header::ContentLength => Bytes::from_static(b"Content-Length"),
+            Header::ContentType => Bytes::from_static(b"Content-Type"),
+            Header::Upgrade => Bytes::from_static(b"Upgrade"),
         }
     }
 }
