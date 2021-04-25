@@ -38,6 +38,8 @@ fn add_header(header_chars: &mut Vec<HeaderChar>, header: &[u8], header_enum: He
 lazy_static! {
     pub static ref HEADER_CHARS: Vec<HeaderChar> = {
         let mut h = Vec::<HeaderChar>::new();
+        add_header(&mut h, b"Referer", Header::Referer);
+        add_header(&mut h, b"Pragma", Header::Pragma);
         add_header(&mut h, b"Upgrade", Header::Upgrade);
         add_header(&mut h, b"Content-Type", Header::ContentType);
         add_header(&mut h, b"Content-Length", Header::ContentLength);

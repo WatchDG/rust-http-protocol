@@ -46,6 +46,8 @@ pub enum Header {
     ContentLength,
     ContentType,
     Upgrade,
+    Pragma,
+    Referer,
 }
 
 impl From<Header> for Bytes {
@@ -68,6 +70,8 @@ impl From<Header> for Bytes {
             Header::ContentLength => Bytes::from_static(b"Content-Length"),
             Header::ContentType => Bytes::from_static(b"Content-Type"),
             Header::Upgrade => Bytes::from_static(b"Upgrade"),
+            Header::Pragma => Bytes::from_static(b"Pragma"),
+            Header::Referer => Bytes::from_static(b"Referer"),
         }
     }
 }
