@@ -56,6 +56,17 @@ impl RequestPart {
             body,
         })
     }
+
+    #[inline]
+    pub fn empty() -> RequestPart {
+        RequestPart {
+            method: None,
+            request_uri: None,
+            http_version: None,
+            headers: None,
+            body: None,
+        }
+    }
 }
 
 impl Add<RequestPart> for RequestPart {

@@ -9,8 +9,8 @@ pub enum StatusCode {
 impl From<StatusCode> for Bytes {
     fn from(s: StatusCode) -> Self {
         match s {
-            StatusCode::S200 => Bytes::from_static(&[50u8, 48, 48]),
-            StatusCode::CE400 => Bytes::from_static(&[52u8, 48, 48]),
+            StatusCode::S200 => Bytes::from_static(b"200"),
+            StatusCode::CE400 => Bytes::from_static(b"400"),
         }
     }
 }
