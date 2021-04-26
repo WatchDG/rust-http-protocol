@@ -46,7 +46,14 @@ pub fn get_http_version(v: &[u8]) -> Result<HttpVersion, HttpVersionError> {
     if v.len() != 8 {
         return Err(HttpVersionError::InvalidHttpVersion);
     }
+
     let mut buf = [0u8; 8];
     buf.copy_from_slice(v);
-    buf.try_into()
+
+    let val = u64::from_be_bytes(buf);
+
+    match val {
+        0x485454502f312e31 => Ok(HttpVersion::Http11),
+        _ => Err(HttpVersionError::InvalidHttpVersion),
+    }
 }
