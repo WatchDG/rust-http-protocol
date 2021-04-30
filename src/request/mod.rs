@@ -67,6 +67,15 @@ impl RequestPart {
             body: None,
         }
     }
+
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.method.is_none()
+            && self.request_uri.is_none()
+            && self.http_version.is_none()
+            && self.headers.is_none()
+            && self.body.is_none()
+    }
 }
 
 impl Add<RequestPart> for RequestPart {

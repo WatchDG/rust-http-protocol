@@ -8,6 +8,7 @@ pub mod method;
 #[macro_use]
 pub mod header;
 pub mod body;
+pub mod parse;
 pub mod request;
 pub mod request_uri;
 pub mod response;

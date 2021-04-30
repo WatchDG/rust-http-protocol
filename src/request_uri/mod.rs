@@ -6,7 +6,7 @@ pub struct RequestUri {
 }
 
 impl RequestUri {
-    pub fn new<T: Into<Bytes>>(r: T) -> Self where {
+    pub fn new<T: Into<Bytes>>(r: T) -> Self {
         Self { inner: r.into() }
     }
 }
