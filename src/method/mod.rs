@@ -17,7 +17,7 @@ impl fmt::Display for MethodError {
 
 impl Error for MethodError {}
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Method {
     Get,
     Head,

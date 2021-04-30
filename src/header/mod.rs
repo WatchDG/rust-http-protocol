@@ -76,7 +76,7 @@ impl From<Header> for Bytes {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Headers {
     inner: BTreeMap<Header, Bytes>,
 }

@@ -3,11 +3,10 @@ extern crate lazy_static;
 
 #[macro_use]
 pub mod char;
+pub mod body;
+pub mod header;
 pub mod http_version;
 pub mod method;
-#[macro_use]
-pub mod header;
-pub mod body;
 pub mod parse;
 pub mod request;
 pub mod request_uri;

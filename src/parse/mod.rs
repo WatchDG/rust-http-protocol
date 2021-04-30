@@ -1,7 +1,7 @@
 use crate::http_version::get_http_version;
 use crate::method::get_method;
 use crate::request::{RequestError, RequestPart};
-use crate::{Method, RequestUri};
+use crate::{HttpVersion, Method, RequestUri};
 use std::error::Error;
 
 #[derive(Debug, PartialEq)]
@@ -16,7 +16,7 @@ pub enum ParsePosition {
 pub fn parse_request_line(
     stop_position: &mut ParsePosition,
     buffer: &mut Vec<u8>,
-    mut index: &mut usize,
+    index: &mut usize,
 ) -> Result<RequestPart, Box<dyn Error>> {
     // meta[0] - sp1
     // meta[1] - sp2
@@ -72,4 +72,21 @@ pub fn parse_request_line(
         headers: None,
         body: None,
     })
+}
+
+#[test]
+fn parse_request_line_0() {
+    let reference = RequestPart {
+        method: Some(Method::Get),
+        request_uri: Some(RequestUri::new(b"/path".to_vec())),
+        http_version: Some(HttpVersion::Http11),
+        headers: None,
+        body: None,
+    };
+
+    let mut stop_position = ParsePosition::RequestEnd;
+    let mut index = 0usize;
+    let mut buffer = b"GET /path HTTP/1.1\r\n".to_vec();
+    let request_part = parse_request_line(&mut stop_position, &mut buffer, &mut index).unwrap();
+    assert_eq!(request_part, reference);
 }

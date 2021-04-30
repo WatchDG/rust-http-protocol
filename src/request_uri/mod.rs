@@ -1,6 +1,6 @@
 use bytes::Bytes;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct RequestUri {
     inner: Bytes,
 }

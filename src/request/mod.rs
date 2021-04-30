@@ -32,7 +32,7 @@ impl fmt::Display for RequestError {
 
 impl Error for RequestError {}
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct RequestPart {
     pub method: Option<Method>,
     pub request_uri: Option<RequestUri>,

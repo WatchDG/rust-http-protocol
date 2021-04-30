@@ -2,13 +2,13 @@ use bytes::BufMut;
 use bytes::Bytes;
 use std::ops::Add;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 enum BodyInner {
     Empty,
     Bytes(Bytes),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Body {
     inner: BodyInner,
 }

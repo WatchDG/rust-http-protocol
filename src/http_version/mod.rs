@@ -17,7 +17,7 @@ impl fmt::Display for HttpVersionError {
 
 impl Error for HttpVersionError {}
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum HttpVersion {
     Http10,
     Http11,
