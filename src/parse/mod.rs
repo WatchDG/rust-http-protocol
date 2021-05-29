@@ -1,7 +1,9 @@
+use crate::header::{check_header_value, get_header};
 use crate::http_version::get_http_version;
 use crate::method::get_method;
+// use crate::parse::ParsePosition::Headers;
 use crate::request::{RequestError, RequestPart};
-use crate::{HttpVersion, Method, RequestUri};
+use crate::{HttpVersion, Method, RequestUri, Headers};
 use std::error::Error;
 
 #[derive(Debug, PartialEq)]
@@ -13,7 +15,7 @@ pub enum ParsePosition {
 }
 
 #[inline]
-pub fn parse_request_line(
+fn parse_request_line(
     stop_position: &mut ParsePosition,
     buffer: &mut Vec<u8>,
     index: &mut usize,
@@ -89,4 +91,91 @@ fn parse_request_line_0() {
     let mut buffer = b"GET /path HTTP/1.1\r\n".to_vec();
     let request_part = parse_request_line(&mut stop_position, &mut buffer, &mut index).unwrap();
     assert_eq!(request_part, reference);
+}
+
+fn parse_headers(
+    stop_position: &mut ParsePosition,
+    buffer: &mut Vec<u8>,
+    index: &mut usize,
+) -> Result<RequestPart, Box<dyn Error>> {
+    let mut index_pairs = Vec::<(usize, usize)>::new();
+
+    let mut s_idx = *index;
+    let mut e_idx = *index;
+
+    for i in *index..buffer.len() {
+        if buffer[i] == lf!() {
+            if buffer[i - 1] == cr!() {
+                e_idx = i - 2;
+                index_pairs.push((s_idx, e_idx));
+                s_idx = i + 1;
+                e_idx = i + 1;
+            }
+        }
+    }
+
+    let mut headers = Headers::new();
+
+    for (s_idx, e_idx) in index_pairs {
+        let header = &buffer[s_idx..=e_idx];
+
+        let mut m = 0;
+        for i in 0..header.len() {
+            if header[i] == (':' as u8) {
+                m = i - 1;
+                break;
+            }
+        }
+
+        let header_name = &header[0..=m];
+        let header_value = &header[m + 3..];
+        let header_enum = get_header(header_name)?;
+        check_header_value(header_value)?;
+        headers.insert(header_enum, header_value.to_vec());
+    }
+
+    // idx = last_index + 3;
+
+    Ok(RequestPart {
+        method: None,
+        request_uri: None,
+        http_version: None,
+        headers: Some(headers),
+        body: None,
+    })
+}
+
+pub fn parse_request(
+    current_position: &mut ParsePosition,
+    stop_position: &mut ParsePosition,
+    vec: &mut Vec<u8>,
+) -> Result<RequestPart, Box<dyn Error>> {
+    let mut idx = 0;
+
+    let mut method = None;
+    let mut request_uri = None;
+    let mut http_version = None;
+    let mut headers = None;
+    let mut body = None;
+
+    let mut request_part = RequestPart::empty();
+
+    if *current_position == ParsePosition::RequestLine {
+        request_part = request_part + parse_request_line(stop_position, vec, &mut idx)?;
+    }
+
+    if *current_position == ParsePosition::Headers {
+        request_part = request_part + parse_headers(stop_position, vec, &mut idx)?;
+    }
+
+    *vec = vec.split_off(idx);
+    idx = 0;
+
+    Ok(RequestPart {
+        method,
+        request_uri,
+        http_version,
+        headers,
+        body,
+    })
 }
