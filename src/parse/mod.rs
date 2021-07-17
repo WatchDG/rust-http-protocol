@@ -1,6 +1,6 @@
 use crate::header::{check_header_value, get_header};
 use crate::http_version::get_http_version;
-use crate::method::get_method;
+use crate::method::parse_method;
 // use crate::parse::ParsePosition::Headers;
 use crate::request::{RequestBuilder, RequestError};
 use crate::{Headers, Method, RequestUri};
@@ -56,7 +56,7 @@ fn parse_request_line(
         return Err(RequestError::InvalidRequestLine.into());
     }
 
-    let method = get_method(&buffer[*index..meta[0]])?;
+    let method = parse_method(&buffer[*index..meta[0]])?;
     let http_version = get_http_version(&buffer[(meta[1] + 1)..=meta[2]])?;
     let request_uri = RequestUri::new(buffer[(meta[0] + 1)..meta[1]].to_owned());
 

@@ -47,7 +47,7 @@ impl From<Method> for Bytes {
 }
 
 #[inline]
-pub fn get_method(v: &[u8]) -> Result<Method, MethodError> {
+pub fn parse_method(v: &[u8]) -> Result<Method, MethodError> {
     if v.len() < 3 || v.len() > 7 {
         return Err(MethodError::InvalidMethod);
     }
