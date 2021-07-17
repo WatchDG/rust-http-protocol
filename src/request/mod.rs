@@ -33,7 +33,7 @@ impl fmt::Display for RequestError {
 impl Error for RequestError {}
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct RequestPart {
+pub struct RequestBuilder {
     pub method: Option<Method>,
     pub request_uri: Option<RequestUri>,
     pub http_version: Option<HttpVersion>,
@@ -41,7 +41,7 @@ pub struct RequestPart {
     pub body: Option<Body>,
 }
 
-impl RequestPart {
+impl RequestBuilder {
     pub fn build(self) -> Result<Request, RequestError> {
         let method = self.method.ok_or(RequestError::MethodIsNone)?;
         let request_uri = self.request_uri.ok_or(RequestError::RequestUriIsNone)?;
@@ -58,8 +58,8 @@ impl RequestPart {
     }
 
     #[inline]
-    pub fn empty() -> RequestPart {
-        RequestPart {
+    pub fn empty() -> RequestBuilder {
+        RequestBuilder {
             method: None,
             request_uri: None,
             http_version: None,
@@ -78,7 +78,7 @@ impl RequestPart {
     }
 }
 
-impl Add<RequestPart> for RequestPart {
+impl Add<RequestBuilder> for RequestBuilder {
     type Output = Self;
     fn add(mut self, other: Self) -> Self {
         self.method = self.method.or(other.method);
