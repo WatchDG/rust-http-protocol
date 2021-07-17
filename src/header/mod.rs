@@ -1,7 +1,7 @@
 mod utils;
 
-use bytes::BufMut;
 use bytes::Bytes;
+use bytes::{BufMut, BytesMut};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::fmt;
@@ -118,14 +118,14 @@ impl Add<Headers> for Headers {
 }
 
 impl From<Headers> for Bytes {
-    fn from(h: Headers) -> Self {
-        let mut buf = Vec::<u8>::new();
-        for (k, v) in h.inner {
-            buf.put(Bytes::from(k));
+    fn from(x: Headers) -> Self {
+        let mut buf = BytesMut::new();
+        for (h, b) in x.inner {
+            buf.put(Bytes::from(h));
             buf.put(Bytes::from_static(&[58u8, sp!()]));
-            buf.put(v);
+            buf.put(b);
             buf.put(Bytes::from_static(&[cr!(), lf!()]));
         }
-        Bytes::from(buf)
+        buf.freeze()
     }
 }

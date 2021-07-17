@@ -1,4 +1,5 @@
 use crate::{Body, Headers, HttpVersion, Method, RequestUri};
+use bytes::{BufMut, Bytes, BytesMut};
 use std::error::Error;
 use std::fmt;
 use std::ops::Add;
@@ -105,4 +106,21 @@ pub struct Request {
     http_version: HttpVersion,
     headers: Headers,
     body: Body,
+}
+
+impl From<Request> for Bytes {
+    fn from(x: Request) -> Self {
+        let mut buf = BytesMut::new();
+        buf.put(Bytes::from(x.method));
+        buf.put_u8(sp!());
+        buf.put(Bytes::from(x.request_uri));
+        buf.put_u8(sp!());
+        buf.put(Bytes::from(x.http_version));
+        buf.put_u8(cr!());
+        buf.put_u8(lf!());
+        buf.put(Bytes::from(x.headers));
+        buf.put_u8(cr!());
+        buf.put_u8(lf!());
+        buf.freeze()
+    }
 }

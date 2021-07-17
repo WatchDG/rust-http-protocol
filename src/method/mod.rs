@@ -31,8 +31,8 @@ pub enum Method {
 }
 
 impl From<Method> for Bytes {
-    fn from(s: Method) -> Self {
-        match s {
+    fn from(x: Method) -> Self {
+        match x {
             Method::Get => Bytes::from_static(b"GET"),
             Method::Head => Bytes::from_static(b"HEAD"),
             Method::Post => Bytes::from_static(b"POST"),
